@@ -1,7 +1,7 @@
 {
   "name": "yireo/magento2-avif2",
   "license": "OSL-3.0",
-  "version": "0.9.5",
+  "version": "0.9.6",
   "type": "magento2-module",
   "homepage": "https://www.yireo.com/software/magento-extensions/avif2",
   "description": "Magento 2 module to add AVIF support to the Magento frontend",

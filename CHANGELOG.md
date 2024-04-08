@@ -6,3 +6,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.6] - 8 April 2028
+### Fixed
+- Compat psr/log with Magento 2.4.7

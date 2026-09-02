@@ -1,0 +1,13 @@
+{
+    "module_name": "Yireo_Avif",
+    "composer_name": "yireo/magento2-avif",
+    "sequence": [
+        "Magento_Backend",
+        "Magento_Catalog",
+        "Magento_Config",
+        "Magento_PageCache",
+        "Magento_Store",
+        "Magento_Theme",
+        "Yireo_NextGenImages"
+    ]
+}

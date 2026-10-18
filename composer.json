@@ -31,10 +31,9 @@
         "yireo/magento2-next-gen-images": "*"
     },
     "require-dev": {
-        "bitexpert/phpstan-magento": "^0.3.0",
-        "composer/composer": "*@dev",
-        "phpstan/phpstan": "^0.12.32",
-        "phpunit/phpunit": "*"
+        "bitexpert/phpstan-magento": "^0.42",
+        "phpstan/phpstan": "^2.0",
+        "phpunit/phpunit": "^9.0|^10.0|^11.0"
     },
     "autoload": {
         "psr-4": {

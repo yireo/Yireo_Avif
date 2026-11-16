@@ -1,1 +1,3 @@
 phpstan.neon
+.playwright/
+.opencode/

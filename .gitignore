@@ -1,3 +1,4 @@
 phpstan.neon
 .playwright/
 .opencode/
+.yireo-extension-builder.json

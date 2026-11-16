@@ -1,10 +1,14 @@
 # Magento 2 module for AVIF
 
 <!-- badges.specs.start -->
+<div class="github-specs-badges">
+
 ![Magento version](https://img.shields.io/badge/Magento-2.4.6%20%7C%202.4.9-orange)
 ![PHP version](https://img.shields.io/badge/PHP-8.2%E2%80%938.5-777BB4)
 ![License](https://img.shields.io/badge/License-OSL--3.0-blue)
 ![Latest Version](https://img.shields.io/packagist/v/yireo/magento2-avif)
+
+</div>
 <!-- badges.specs.end -->
 
 This module adds AVIF support to Magento 2, as a convertor for [Yireo NextGenImages](https://github.com/yireo/Yireo_NextGenImages). It ships with the following features:
@@ -36,9 +40,13 @@ Feel free to open an **Issue** here on GitHub. However, do make sure to be thoro
 ## Current status
 
 <!-- badges.test.start -->
+<div class="github-pipeline-badges">
+
 ![Static Tests](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_Avif/static-tests.yml?label=static-tests)
 ![Unit Tests](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_Avif/unit-tests.yml?label=unit-tests)
 ![Integration Tests](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_Avif/integration-tests.yml?label=integration-tests)
 ![Playwright](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_Avif/playwright.yml?label=playwright)
 ![DI Compilation](https://img.shields.io/github/actions/workflow/status/yireo/Yireo_Avif/compile.yml?label=compile)
+
+</div>
 <!-- badges.test.end -->

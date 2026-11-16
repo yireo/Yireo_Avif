@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd" layout="empty">
+    <body>
+        <referenceContainer name="main">
+            <block name="avif-test-images" template="Yireo_Avif::test/images.phtml" before="-">
+                <arguments>
+                    <argument name="image_provider" xsi:type="object">Yireo\Avif\Test\Utils\ImageProvider</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

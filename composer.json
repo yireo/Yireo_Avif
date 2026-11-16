@@ -9,7 +9,8 @@
         "composer-installer",
         "magento",
         "Magento 2",
-        "Exception",
+        "AVIF",
+        "images",
         "Yireo"
     ],
     "authors": [
@@ -20,18 +21,17 @@
     ],
     "require": {
         "ext-gd": "*",
-        "ext-json": "*",
         "ext-pcre": "*",
         "magento/framework": "^101.0.1|^101.1|^102.0|^103.0",
         "magento/module-backend": "^100.0|^101.0|^102.0",
         "magento/module-config": "^101.0.0|^101.1.0",
-        "magento/module-page-cache": "^100.0",
+        "magento/module-store": "^101.0",
         "php": ">=8.2 <8.6",
-        "psr/log": "^1 || ^2 || ^3",
-        "yireo/magento2-next-gen-images": "*"
+        "yireo/magento2-next-gen-images": "^0.5.16"
     },
     "require-dev": {
         "bitexpert/phpstan-magento": "^0.42",
+        "ext-json": "*",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^9.0|^10.0|^11.0"
     },
@@ -42,5 +42,8 @@
         "files": [
             "registration.php"
         ]
+    },
+    "suggest": {
+        "magento/module-swatches": "Update AVIF sources when switching swatches in product listings"
     }
 }

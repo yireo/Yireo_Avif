@@ -8,5 +8,82 @@
         "Yireo_NextGenImages"
     ],
     "phpcs_severity": "9",
-    "phpstan_level": "7"
+    "phpstan_level": "7",
+    "php_versions": [
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4"
+    ],
+    "skip_magento_versions": [],
+    "skip_css_utils": false,
+    "modules": [
+        "Magento_AdminNotification",
+        "Magento_Backend",
+        "Magento_Catalog",
+        "Magento_CatalogInventory",
+        "Magento_Checkout",
+        "Magento_Cms",
+        "Magento_Config",
+        "Magento_ConfigurableProduct",
+        "Magento_Cron",
+        "Magento_Csp",
+        "Magento_Customer",
+        "Magento_Directory",
+        "Magento_Eav",
+        "Magento_Indexer",
+        "Magento_LayeredNavigation",
+        "Magento_MediaGalleryUiApi",
+        "Magento_MediaStorage",
+        "Magento_Msrp",
+        "Magento_PageCache",
+        "Magento_Payment",
+        "Magento_Quote",
+        "Magento_RemoteStorage",
+        "Magento_Robots",
+        "Magento_Rule",
+        "Magento_Sales",
+        "Magento_SalesSequence",
+        "Magento_Sitemap",
+        "Magento_Store",
+        "Magento_Swatches",
+        "Magento_Theme",
+        "Magento_Variable",
+        "Yireo_CspUtilities",
+        "Yireo_IntegrationTestHelper",
+        "Yireo_NextGenImages"
+    ],
+    "components": [],
+    "config": [
+        {
+            "path": "yireo_avif/settings/enabled",
+            "label": "Settings > Enabled",
+            "description": ""
+        },
+        {
+            "path": "yireo_avif/settings/quality_level",
+            "label": "Settings > Quality level",
+            "description": ""
+        },
+        {
+            "path": "yireo_avif/settings/speed",
+            "label": "Settings > Encoding speed",
+            "description": ""
+        },
+        {
+            "path": "yireo_avif/settings/avif_support",
+            "label": "Settings > AVIF support in PHP GD",
+            "description": ""
+        },
+        {
+            "path": "yireo_avif/settings/module_version",
+            "label": "Settings > Module version",
+            "description": ""
+        }
+    ],
+    "tests": {
+        "unit": 10,
+        "integration": 25,
+        "functional": 3
+    }
 }

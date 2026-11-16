@@ -1,7 +1,10 @@
 # Testing
-This extension ships with Integration Tests (`Test/Integration/`) and a Travis CI build (`.travis.yml` which triggers scripts in `.ci-scripts/`). The CI scripts can be tested locally with the `Dockerfile`:
+This extension ships with the following tests:
 
-    docker build -t ci .
+- Unit tests (`Test/Unit/`)
+- Integration tests (`Test/Integration/`)
+- Playwright tests (`Test/Playwright/`), using the test page `/avif/test/images` and the `Loki_FunctionalTests` module
 
-docker-compose up --build --abort-on-container-exit
+All of them are run by GitHub Actions (`.github/workflows/`).
 
+Tests that need real AVIF encoding are skipped when PHP GD has no AVIF support. All other tests replace the encoder with `Test/Integration/Stub/FakeGdEncoder`.

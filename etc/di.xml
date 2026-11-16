@@ -4,7 +4,7 @@
     <type name="Yireo\NextGenImages\Convertor\ConvertorListing">
         <arguments>
             <argument name="convertors" xsi:type="array">
-                <item name="avif" xsi:type="object">Yireo\Avif\Convertor\Convertor</item>
+                <item name="avif" xsi:type="object" sortOrder="-10">Yireo\Avif\Convertor\Convertor</item>
             </argument>
         </arguments>
     </type>

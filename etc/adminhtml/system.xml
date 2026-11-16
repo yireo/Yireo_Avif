@@ -10,11 +10,31 @@
             <resource>Yireo_Avif::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="34" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>
-                <field id="enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="module_version" translate="label" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                <field id="quality_level" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Quality level</label>
+                    <comment>Number between 0 (smallest file) and 100 (best quality)</comment>
+                    <validate>required-entry validate-digits validate-digits-range digits-range-0-100</validate>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="speed" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Encoding speed</label>
+                    <comment>Number between 0 (slowest, smallest file) and 10 (fastest, biggest file)</comment>
+                    <validate>required-entry validate-digits validate-digits-range digits-range-0-10</validate>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="avif_support" translate="label" type="note" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>AVIF support in PHP GD</label>
+                    <frontend_model>Yireo\Avif\Block\Adminhtml\System\Config\AvifSupport</frontend_model>
+                </field>
+                <field id="module_version" translate="label" type="note" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Module version</label>
                     <frontend_model>Yireo\Avif\VirtualType\Block\Adminhtml\System\Config\ModuleVersion</frontend_model>
                 </field>

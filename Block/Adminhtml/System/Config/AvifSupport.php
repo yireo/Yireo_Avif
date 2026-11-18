@@ -21,14 +21,20 @@ class AvifSupport extends Field
         parent::__construct($context, $data);
     }
 
-    protected function _getElementHtml(AbstractElement $element)
+    protected function _getElementHtml(AbstractElement $element): string
     {
         if ($this->gdEncoder->isSupported()) {
-            return $this->_escaper->escapeHtml(__('Yes, PHP GD supports AVIF'));
+            return $this->escape((string)__('Yes, PHP GD supports AVIF'));
         }
 
-        return '<strong>' . $this->_escaper->escapeHtml(
-            __('No, PHP GD does not support AVIF. Compile GD with libavif to convert images.')
-        ) . '</strong>';
+        $message = (string)__('No, PHP GD does not support AVIF. Compile GD with libavif to convert images.');
+        return '<strong>' . $this->escape($message) . '</strong>';
+    }
+
+    private function escape(string $text): string
+    {
+        /** @var string $escapedText */
+        $escapedText = $this->_escaper->escapeHtml($text);
+        return $escapedText;
     }
 }

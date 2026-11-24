@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Yireo\Avif\Convertor;
 
+use Exception;
 use Magento\Framework\Exception\AlreadyExistsException;
-use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Lock\LockManagerInterface;
-use Magento\Framework\View\Asset\File\NotFoundException;
 use Yireo\Avif\Config\Config;
 use Yireo\NextGenImages\Convertor\ConvertorInterface;
 use Yireo\NextGenImages\Exception\ConvertorException;
@@ -59,7 +58,7 @@ class Convertor implements ConvertorInterface
 
         try {
             $avifImage = $this->targetImageFactory->create($image, 'avif');
-        } catch (FileSystemException|NotFoundException $exception) {
+        } catch (Exception $exception) {
             throw new ConvertorException($exception->getMessage());
         }
 
@@ -88,7 +87,7 @@ class Convertor implements ConvertorInterface
             throw new ConvertorException('AVIF image creation is not allowed');
         }
 
-        $lockName = self::LOCK_PREFIX . md5($targetImagePath);
+        $lockName = self::LOCK_PREFIX . substr(hash('sha256', $targetImagePath), 0, 40);
         $locked = $this->acquireLock($lockName, $targetImagePath);
 
         try {
@@ -137,7 +136,7 @@ class Convertor implements ConvertorInterface
 
             try {
                 $srcSetImage = $this->imageFactory->createFromUrl($url);
-            } catch (FileSystemException|NotFoundException $exception) {
+            } catch (Exception $exception) {
                 throw new ConvertorException($exception->getMessage());
             }
 

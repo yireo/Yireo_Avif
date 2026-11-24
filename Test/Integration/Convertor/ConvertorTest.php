@@ -283,7 +283,7 @@ class ConvertorTest extends TestCase
     {
         $this->useGdEncoder(new FakeGdEncoder());
         $avifPath = $this->imageFolder . '/flowers.avif';
-        $lockName = 'yireo_avif_' . md5($avifPath);
+        $lockName = 'yireo_avif_' . substr(hash('sha256', $avifPath), 0, 40);
         $lockManager = $this->createMock(LockManagerInterface::class);
         $lockManager->expects($this->once())->method('lock')->with($lockName, 0)->willReturn(true);
         $lockManager->expects($this->once())->method('unlock')->with($lockName)->willReturn(true);

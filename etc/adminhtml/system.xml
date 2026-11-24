@@ -18,6 +18,7 @@
                     <label>Quality level</label>
                     <comment>Number between 0 (smallest file) and 100 (best quality)</comment>
                     <validate>required-entry validate-digits validate-digits-range digits-range-0-100</validate>
+                    <backend_model>Yireo\Avif\VirtualType\Config\Backend\QualityLevel</backend_model>
                     <depends>
                         <field id="*/*/enabled">1</field>
                     </depends>
@@ -26,6 +27,7 @@
                     <label>Encoding speed</label>
                     <comment>Number between 0 (slowest, smallest file) and 10 (fastest, biggest file)</comment>
                     <validate>required-entry validate-digits validate-digits-range digits-range-0-10</validate>
+                    <backend_model>Yireo\Avif\VirtualType\Config\Backend\Speed</backend_model>
                     <depends>
                         <field id="*/*/enabled">1</field>
                     </depends>

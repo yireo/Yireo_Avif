@@ -9,6 +9,20 @@
         </arguments>
     </type>
 
+    <virtualType name="Yireo\Avif\VirtualType\Config\Backend\QualityLevel" type="Yireo\Avif\Config\Backend\IntegerRange">
+        <arguments>
+            <argument name="min" xsi:type="number">0</argument>
+            <argument name="max" xsi:type="number">100</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="Yireo\Avif\VirtualType\Config\Backend\Speed" type="Yireo\Avif\Config\Backend\IntegerRange">
+        <arguments>
+            <argument name="min" xsi:type="number">0</argument>
+            <argument name="max" xsi:type="number">10</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="Yireo\Avif\VirtualType\Block\Adminhtml\System\Config\ModuleVersion" type="Yireo\NextGenImages\Block\Adminhtml\System\Config\ModuleVersion">
         <arguments>
             <argument name="moduleName" xsi:type="string">Yireo_Avif</argument>

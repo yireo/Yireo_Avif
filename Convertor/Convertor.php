@@ -3,6 +3,10 @@ declare(strict_types=1);
 
 namespace Yireo\Avif\Convertor;
 
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\FileSystemException;
+use Magento\Framework\Lock\LockManagerInterface;
+use Magento\Framework\View\Asset\File\NotFoundException;
 use Yireo\Avif\Config\Config;
 use Yireo\NextGenImages\Convertor\ConvertorInterface;
 use Yireo\NextGenImages\Exception\ConvertorException;
@@ -13,14 +17,16 @@ use Yireo\NextGenImages\Util\File;
 
 class Convertor implements ConvertorInterface
 {
-    private const SUPPORTED_MIMETYPES = ['image/jpeg', 'image/jpg', 'image/png'];
+    private const LOCK_PREFIX = 'yireo_avif_';
 
     public function __construct(
         private readonly Config $config,
         private readonly File $imageFile,
         private readonly GdEncoder $gdEncoder,
         private readonly TargetImageFactory $targetImageFactory,
-        private readonly ImageFactory $imageFactory
+        private readonly ImageFactory $imageFactory,
+        private readonly ImageGuard $imageGuard,
+        private readonly LockManagerInterface $lockManager
     ) {
     }
 
@@ -35,11 +41,7 @@ class Convertor implements ConvertorInterface
             throw new ConvertorException('AVIF conversion is not enabled');
         }
 
-        if (!in_array($image->getMimetype(), self::SUPPORTED_MIMETYPES, true)) {
-            throw new ConvertorException('The mimetype "' . $image->getMimetype() . '" is not supported');
-        }
-
-        $avifImage = $this->targetImageFactory->create($image, 'avif');
+        $avifImage = $this->createTargetImage($image);
         $this->convert($image->getPath(), $avifImage->getPath());
 
         if (!empty($image->getSrcSet())) {
@@ -49,10 +51,33 @@ class Convertor implements ConvertorInterface
         return $avifImage;
     }
 
+    private function createTargetImage(Image $image): Image
+    {
+        if (!$this->imageGuard->isSupportedSource($image->getPath())) {
+            throw new ConvertorException('The image "' . basename($image->getPath()) . '" is not supported');
+        }
+
+        try {
+            $avifImage = $this->targetImageFactory->create($image, 'avif');
+        } catch (FileSystemException|NotFoundException $exception) {
+            throw new ConvertorException($exception->getMessage());
+        }
+
+        if (!$this->imageGuard->isValidUrl($avifImage->getUrl())) {
+            throw new ConvertorException('Invalid AVIF URL');
+        }
+
+        return $avifImage;
+    }
+
     private function convert(string $sourceImagePath, string $targetImagePath): void
     {
+        if (!$this->imageGuard->isAllowedTarget($targetImagePath)) {
+            throw new ConvertorException('AVIF path "' . basename($targetImagePath) . '" is not allowed');
+        }
+
         if (!$this->imageFile->fileExists($sourceImagePath)) {
-            throw new ConvertorException('Source image does not exist: ' . $sourceImagePath);
+            throw new ConvertorException('Source image does not exist: ' . basename($sourceImagePath));
         }
 
         if (!$this->imageFile->needsConversion($sourceImagePath, $targetImagePath)) {
@@ -63,16 +88,40 @@ class Convertor implements ConvertorInterface
             throw new ConvertorException('AVIF image creation is not allowed');
         }
 
-        $this->gdEncoder->encode(
-            $sourceImagePath,
-            $targetImagePath,
-            $this->config->getQualityLevel(),
-            $this->config->getSpeed()
-        );
+        $lockName = self::LOCK_PREFIX . md5($targetImagePath);
+        $locked = $this->acquireLock($lockName, $targetImagePath);
+
+        try {
+            $this->gdEncoder->encode(
+                $sourceImagePath,
+                $targetImagePath,
+                $this->config->getQualityLevel(),
+                $this->config->getSpeed()
+            );
+        } finally {
+            if ($locked) {
+                $this->lockManager->unlock($lockName);
+            }
+        }
 
         if (!$this->imageFile->fileExists($targetImagePath)) {
-            throw new ConvertorException('AVIF path "' . $targetImagePath . '" does not exist after conversion');
+            throw new ConvertorException(
+                'AVIF path "' . basename($targetImagePath) . '" does not exist after conversion'
+            );
         }
+    }
+
+    private function acquireLock(string $lockName, string $targetImagePath): bool
+    {
+        try {
+            if ($this->lockManager->lock($lockName, 0)) {
+                return true;
+            }
+        } catch (AlreadyExistsException) {
+            return false;
+        }
+
+        throw new ConvertorException('AVIF image "' . basename($targetImagePath) . '" is being converted');
     }
 
     private function convertSrcSet(string $srcSet): string
@@ -80,11 +129,21 @@ class Convertor implements ConvertorInterface
         $avifSrcSet = [];
         foreach (explode(',', $srcSet) as $srcSetEntry) {
             $pieces = (array)preg_split('/\s+/', trim($srcSetEntry, " \f\n\r\t\v\x00"));
-            $srcSetImage = $this->imageFactory->createFromUrl((string)$pieces[0]);
-            $srcSetAvifImage = $this->targetImageFactory->create($srcSetImage, 'avif');
+            $url = (string)$pieces[0];
+            $descriptor = (string)($pieces[1] ?? '');
+            if (count($pieces) > 2 || !$this->imageGuard->isValidSrcSetDescriptor($descriptor)) {
+                throw new ConvertorException('Invalid srcset descriptor');
+            }
+
+            try {
+                $srcSetImage = $this->imageFactory->createFromUrl($url);
+            } catch (FileSystemException|NotFoundException $exception) {
+                throw new ConvertorException($exception->getMessage());
+            }
+
+            $srcSetAvifImage = $this->createTargetImage($srcSetImage);
             $this->convert($srcSetImage->getPath(), $srcSetAvifImage->getPath());
 
-            $descriptor = $pieces[1] ?? '';
             $avifSrcSet[] = trim($srcSetAvifImage->getUrl() . ' ' . $descriptor, " \f\n\r\t\v\x00");
         }
 

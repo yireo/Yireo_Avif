@@ -22,6 +22,11 @@ class GdEncoder
             throw new ConvertorException('PHP GD does not support AVIF');
         }
 
+        $targetFolder = dirname($targetPath);
+        if (!is_dir($targetFolder) || !is_writable($targetFolder)) {
+            throw new ConvertorException('Unable to write AVIF image "' . basename($targetPath) . '"');
+        }
+
         $gdImage = $this->createGdImage($sourcePath);
         $tmpPath = $targetPath . '.tmp-' . bin2hex(random_bytes(4));
 

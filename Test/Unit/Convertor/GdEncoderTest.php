@@ -46,8 +46,50 @@ class GdEncoderTest extends TestCase
         file_put_contents($sourcePath, 'not an image');
 
         $this->expectException(ConvertorException::class);
-        $this->expectExceptionMessage('Unable to read image "' . $sourcePath . '" with GD');
+        $this->expectExceptionMessage('Unable to read image "broken.jpg" with GD');
         (new GdEncoder())->encode($sourcePath, $this->tmpDir . '/broken.avif', 60, 6);
+    }
+
+    public function testEncodeRejectsImagesWithTooManyPixels(): void
+    {
+        $this->skipWithoutAvifSupport();
+        $sourcePath = $this->tmpDir . '/huge.png';
+        $ihdr = pack('NNCCCCC', 10000, 10000, 8, 6, 0, 0, 0);
+        $chunk = pack('N', strlen($ihdr)) . 'IHDR' . $ihdr . pack('N', crc32('IHDR' . $ihdr));
+        file_put_contents($sourcePath, "\x89PNG\r\n\x1a\n" . $chunk);
+
+        $this->expectException(ConvertorException::class);
+        $this->expectExceptionMessage('Image "huge.png" is too large to convert');
+        try {
+            (new GdEncoder())->encode($sourcePath, $this->tmpDir . '/huge.avif', 60, 10);
+        } finally {
+            $this->assertFileDoesNotExist($this->tmpDir . '/huge.avif');
+        }
+    }
+
+    public function testEncodeLeavesNoTemporaryFiles(): void
+    {
+        $this->skipWithoutAvifSupport();
+        (new GdEncoder())->encode($this->getImagePath('goku.jpg'), $this->tmpDir . '/goku.avif', 60, 10);
+
+        $this->assertFileExists($this->tmpDir . '/goku.avif');
+        $this->assertSame([], glob($this->tmpDir . '/*.tmp-*'));
+    }
+
+    public function testEncodeLeavesNoTemporaryFilesOnFailure(): void
+    {
+        $this->skipWithoutAvifSupport();
+        $targetPath = $this->tmpDir . '/missing-folder/goku.avif';
+
+        try {
+            (new GdEncoder())->encode($this->getImagePath('goku.jpg'), $targetPath, 60, 10);
+            $this->fail('Expected a ConvertorException');
+        } catch (ConvertorException $exception) {
+            $this->assertStringNotContainsString($this->tmpDir, $exception->getMessage());
+        }
+
+        $this->assertFileDoesNotExist($targetPath);
+        $this->assertSame([], glob($this->tmpDir . '/missing-folder/*') ?: []);
     }
 
     public function testEncodeCreatesAvifFromJpegAndPng(): void

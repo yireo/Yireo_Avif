@@ -4,7 +4,7 @@
         <referenceContainer name="main">
             <block name="avif-test-images" template="Yireo_Avif::test/images.phtml" before="-">
                 <arguments>
-                    <argument name="image_provider" xsi:type="object">Yireo\Avif\Test\Utils\ImageProvider</argument>
+                    <argument name="image_provider" xsi:type="object">Yireo\Avif\ViewModel\TestImageProvider</argument>
                 </arguments>
             </block>
         </referenceContainer>

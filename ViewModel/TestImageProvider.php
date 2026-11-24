@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Yireo\Avif\Test\Utils;
+namespace Yireo\Avif\ViewModel;
 
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
-class ImageProvider implements ArgumentInterface
+class TestImageProvider implements ArgumentInterface
 {
     /**
      * @return string[]

@@ -54,6 +54,16 @@ class ConfigTest extends TestCase
         $this->assertFalse($config->allowImageCreation());
     }
 
+    public function testAllowTestPageReadsHiddenSetting(): void
+    {
+        $scopeConfig = $this->createMock(ScopeConfigInterface::class);
+        $scopeConfig->method('getValue')->willReturnMap([
+            ['yireo_avif/test/enabled', ScopeInterface::SCOPE_STORE, null, '1'],
+        ]);
+
+        $this->assertTrue($this->getConfig($scopeConfig, $this->createMock(StoreInterface::class))->allowTestPage());
+    }
+
     #[DataProvider('getQualityLevels')]
     public function testQualityLevelIsBetween0And100(mixed $value, int $expected): void
     {

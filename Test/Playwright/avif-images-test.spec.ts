@@ -6,6 +6,7 @@ const defaultConfig = {
     'yireo_avif/settings/enabled': 1,
     'yireo_avif/settings/quality_level': 60,
     'yireo_avif/settings/speed': 10,
+    'yireo_avif/test/enabled': 1,
     'yireo_nextgenimages/settings/enabled': 1,
     'yireo_nextgenimages/settings/convert_images': 1,
     'yireo_nextgenimages/settings/target_directory': 'same_as_source',

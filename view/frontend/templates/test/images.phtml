@@ -5,11 +5,11 @@ declare(strict_types=1);
 
 use Magento\Framework\Escaper;
 use Magento\Framework\View\Element\Template;
-use Yireo\Avif\Test\Utils\ImageProvider;
+use Yireo\Avif\ViewModel\TestImageProvider;
 
 /** @var Template $block */
 /** @var Escaper $escaper */
-/** @var ImageProvider $imageProvider */
+/** @var TestImageProvider $imageProvider */
 $imageProvider = $block->getData('image_provider');
 ?>
 <?php foreach ($imageProvider->getImages() as $image): ?>

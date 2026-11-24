@@ -29,6 +29,11 @@ class Config implements ArgumentInterface
         return $this->nextGenImagesConfig->allowImageCreation();
     }
 
+    public function allowTestPage(): bool
+    {
+        return (bool)$this->getValue('yireo_avif/test/enabled');
+    }
+
     public function getQualityLevel(): int
     {
         return $this->getIntegerInRange('yireo_avif/settings/quality_level', 0, 100);

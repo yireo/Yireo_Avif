@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.9] - 25 November 2026
+### Fixed
+- Prevent path traversal and srcset injection: only JPEG/PNG files inside pub/media, pub/static or var/tmp are converted and srcset descriptors and URLs are validated
+- Reject images above 40 megapixels before decoding them, to prevent memory exhaustion
+- Write AVIF images atomically via a temporary file and lock conversion per target image
+- Keep absolute server paths out of exception messages
+- Hide the AVIF test page /avif/test/images outside of developer mode, unless the hidden setting yireo_avif/test/enabled is set
+- Validate AVIF quality level and encoding speed when saving the configuration
+- Fail with a clear error when the AVIF target folder is missing or not writable
+- Turn errors for missing source images into regular conversion errors instead of uncaught exceptions
+
 ## [0.9.8] - 16 November 2026
 ### Fixed
 - Require NextGenImages 0.5.16 and declare used modules only

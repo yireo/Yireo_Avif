@@ -49,7 +49,6 @@
         "Magento_Swatches",
         "Magento_Theme",
         "Magento_Variable",
-        "Yireo_CspUtilities",
         "Yireo_IntegrationTestHelper",
         "Yireo_NextGenImages"
     ],
@@ -82,8 +81,8 @@
         }
     ],
     "tests": {
-        "unit": 10,
-        "integration": 25,
+        "unit": 24,
+        "integration": 32,
         "functional": 3
     }
 }
